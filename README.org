@@ -10,8 +10,8 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
 
   
 * Step 2
-
-  1. Copy the tar file for installation to your =raspberry= temporary folder.
+ 
+  - Copy the tar file for installation to your =raspberry= temporary folder.
 
   #+begin_quote
   scp examplefile yourusername@yourserver:/tmp
@@ -23,34 +23,34 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
   scp ids.12.10.UC12DE.linuxARM32v6.tar pi@raspberrypi:/tmp
   #+END_SRC
 
-  2. Then login into your raspberry and do the following:
+  - Then login into your raspberry and do the following:
 
-  3. Create a temporary folder for the Informix install files
+  - Create a temporary folder for the Informix install files
 
   #+BEGIN_SRC sh
   mkdir /tmp/ifxinstall
   #+END_SRC
 
-  4. Change directory to that folder:
+  - Change directory to that folder:
 
   #+begin_src sh
   cd /tmp/ifxinstall
   #+end_src
 
-  5. Extract the Informix tar file into the ifxinstall folder - wait a
+  -  Extract the Informix tar file into the ifxinstall folder - wait a
      bit until everything is unpacked and do not interrupt:
 
   #+BEGIN_SRC sh
   tar xvf /tmp/ids.12.10.UC12DE.linuxARM32v6.tar
   #+END_SRC
 
-  6. create a new group informix:
+  - create a new group informix:
 
   #+BEGIN_SRC sh
   sudo addgroup informix
   #+END_SRC
 
-  7. Create a new user informix (with the primary group
+  -  (Ref:1) Create a new user informix (with the primary group
      informix). During this step you will be asked for a password for
      informix. Please take a note of that password. You will need it
      later.
@@ -59,14 +59,14 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
   sudo adduser --ingroup informix informix
   #+END_SRC
 
-  8. Make sure to add the user informix to the /etc/sudoers file by
-     adding the following line by using the 'sudo visudo' command:
+  - Make sure to add the user informix to the /etc/sudoers file by
+    adding the following line by using the 'sudo visudo' command:
 
   #+BEGIN_SRC sh
   informix ALL=(ALL) NOPASSWD: ALL
   #+END_SRC
 
-  9. Run the installation script
+  - Run the installation script
 
   #+BEGIN_SRC sh
   sudo ./ids_install
@@ -74,38 +74,38 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
 
   Follow the UI and enter the following:
   
-  - accept -> 1 RET
+  + accept -> 1 RET
 
-  - RET
+  + RET
 
-  - specify directory where to install the products:
+  + specify directory where to install the products:
     =/opt/IBM/informix1210UC4DE=
 
-  - accept -> 1 (wait a long bit and do not interrupt)
+  + accept -> 1 (wait a long bit and do not interrupt)
 
-  10. Optional: As soon as the installation has successfully finished,
-      you can delete the ifxinstall folder and the Informix install
-      tar file if you want.
+  - Optional: As soon as the installation has successfully finished,
+    you can delete the ifxinstall folder and the Informix install tar
+    file if you want.
 
   #+BEGIN_SRC sh
   rm -rf /tmp/ifxinstall
   rm /tmp/ids.12.10.UC4DE.Linux-ARM6.tar
   #+END_SRC
 
-  11. Optional, but highly recommended: create the following symbolic link:
+  - Optional, but highly recommended: create the following symbolic link:
   
   #+BEGIN_SRC sh
   sudo ln -s /opt/IBM/informix1210UC4DE /opt/IBM/informix
   #+END_SRC
 
-  12. Create the folder which will later contain the Informix database
-      files:
+  - Create the folder which will later contain the Informix database
+    files:
 
   #+BEGIN_SRC sh
   sudo mkdir /opt/IBM/ifxdata
   #+END_SRC
 
-  13. Set its ownership and permissions:
+  - Set its ownership and permissions:
 
   #+BEGIN_SRC sh
   sudo chown informix:informix /opt/IBM/ifxdata
@@ -116,58 +116,58 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
 * Step 3 Configuration and initialization of a new Informix instance
 
 
-  14. Login as the informix user
+  - Login as the informix user
 
       #+BEGIN_SRC sh
       su informix 
       #+END_SRC
 
-      And enter your password of step 7.
+      And enter your password of (Ref:1).
 
-  15. Set the $INFORMIXDIR environment variable to point to the
-      Informix install directory (actually to the symbolic link):
+  - Set the $INFORMIXDIR environment variable to point to the Informix
+    install directory (actually to the symbolic link):
 
       #+BEGIN_SRC sh
 export INFORMIXDIR=/opt/IBM/informix
       #+END_SRC
 
-  16. Extend the $PATH environment variable:
+  - Extend the $PATH environment variable:
 
       #+BEGIN_SRC sh
 export PATH=$PATH:$INFORMIXDIR/bin
      #+END_SRC
 
-  17. Set the $INFORMIXSERVER environment variable (you can choose any
-      name here, but let's use ol_informix1210 for now to keep it
-      simple):
+  - Set the $INFORMIXSERVER environment variable (you can choose any
+    name here, but let's use ol_informix1210 for now to keep it
+    simple):
 
       #+BEGIN_SRC sh
 export INFORMIXSERVER=ol_informix1210
       #+END_SRC
 
 
-  18. Create a new Informix configuration file:
+  - Create a new Informix configuration file:
 
       #+BEGIN_SRC sh
 cp $INFORMIXDIR/etc/onconfig.std $INFORMIXDIR/etc/onconfig
       #+END_SRC
 
-  19. Create a new Informix hosts definition file:
+  - Create a new Informix hosts definition file:
 
       #+BEGIN_SRC sh
 cp $INFORMIXDIR/etc/sqlhosts.demo $INFORMIXDIR/etc/sqlhosts
       #+END_SRC
 
-  20. Edit the file $INFORMIXDIR/etc/onconfig (with nano, vi or any
-      other editor) 
+  - Edit the file $INFORMIXDIR/etc/onconfig (with nano, vi or any
+    other editor)
 
-      I.e. enter the file via the nano editor (or any other editor)
+    I.e. enter the file via the nano editor (or any other editor)
 
       #+BEGIN_SRC sh
       nano $INFORMIXDIR/etc/onconfig
       #+END_SRC
 
-      And apply the following *changes* (use the search option ^W (control-W)):
+    And apply the following *changes* (use the search option ^W (control-W)):
 
       #+begin_example
 ROOTPATH /opt/IBM/ifxdata/rootdbs
@@ -177,47 +177,47 @@ TAPEDEV		/dev/null
 LOGFILES	10
       #+end_example
 
-      Save the file and exit the editor (Control-O RET; Control-X).
+    Save the file and exit the editor (Control-O RET; Control-X).
   
-  21. Edit the file $INFORMIXDIR/etc/sqlhosts
+  - Edit the file $INFORMIXDIR/etc/sqlhosts
 
       #+BEGIN_SRC sh
 nano $INFORMIXDIR/etc/sqlhosts
       #+END_SRC
       
-      And *add* the following line:
+    And *add* the following line:
 
       #+BEGIN_SRC sh
 ol_informix1210	onsoctcp	localhost	9088
       #+END_SRC
 
-      Note: 9088 is the port which will be used by Informix for the
-      client/server communication. You can choose any available port
-      you want. Save the file and exit the editor.
+    Note: 9088 is the port which will be used by Informix for the
+    client/server communication. You can choose any available port
+    you want. Save the file and exit the editor.
 
-  22. Create an empty database file and set the correct access mode:
+  - Create an empty database file and set the correct access mode:
 
   #+BEGIN_SRC sh
 touch /opt/IBM/ifxdata/rootdbs
 chmod 660 /opt/IBM/ifxdata/rootdbs
   #+END_SRC
 
-  23. Now we are ready to initialize Informix for the first time:
+  - Now we are ready to initialize Informix for the first time:
 
       #+BEGIN_SRC sh
 oninit -iv
       #+END_SRC
 
-      The first initialization will take a few minutes and it will
-      create a few system databases automatically. You can monitor the
-      pogress by doing the following:
+    The first initialization will take a few minutes and it will
+    create a few system databases automatically. You can monitor the
+    pogress by doing the following:
 
       #+BEGIN_SRC sh
 tail -f /opt/IBM/informix/tmp/online.log
       #+END_SRC
 
-      Please wait until you see the following entry in the =online.log=
-      file before you continue:
+    Please wait until you see the following entry in the =online.log=
+    file before you continue:
 
       #+begin_quote
 'sysadmin' database built successfully     
