@@ -73,15 +73,15 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
   #+END_SRC
 
   Follow the UI and enter the following:
-  
-  + accept -> 1 RET
 
-  + RET
+     + accept -> 1 RET
 
-  + specify directory where to install the products:
-    =/opt/IBM/informix1210UC4DE=
+     + RET
 
-  + accept -> 1 (wait a long bit and do not interrupt)
+     + specify directory where to install the products:
+       =/opt/IBM/informix1210UC4DE=
+
+     + accept -> 1 (wait a long bit and do not interrupt)
 
   - Optional: As soon as the installation has successfully finished,
     you can delete the ifxinstall folder and the Informix install tar
