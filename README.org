@@ -37,8 +37,8 @@ raspberry-pi. It is mostly a 1:1 from [[https://www.raspberrypi.org/forums/viewt
   cd /tmp/ifxinstall
   #+end_src
 
-  -  Extract the Informix tar file into the ifxinstall folder - wait a
-     bit until everything is unpacked and do not interrupt:
+  -  Extract the Informix tar file - wait a bit until everything is
+    unpacked and do not interrupt:
 
   #+BEGIN_SRC sh
   tar xvf /tmp/ids.12.10.UC12DE.linuxARM32v6.tar
